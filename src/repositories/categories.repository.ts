@@ -12,6 +12,12 @@ export default class CategoryRepository {
     this.categories = [];
   }
 
+  findByName(name: string) {
+    return this.categories.find(
+      (category) => category.name.toLowerCase() === name.toLowerCase()
+    );
+  }
+
   create({ name, description }: ICategoryDTO) {
     const category = new Category();
 
