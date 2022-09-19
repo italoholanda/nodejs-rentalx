@@ -1,12 +1,10 @@
 import Category from "../model/Category";
 import { ICategoryDTO, ICategoriesRepository } from "./ICategoriesRepository";
 
-export default class CategoryRepository implements ICategoriesRepository {
+export default class PostgresCategoriesRepository
+  implements ICategoriesRepository
+{
   private categories: Category[];
-
-  constructor() {
-    this.categories = [];
-  }
 
   findByName(name: string) {
     return this.categories.find(
