@@ -6,8 +6,16 @@ import ISpecificationRepository, {
 class SpecificationRepository implements ISpecificationRepository {
   private categories: Specification[];
 
+  private static INSTANCE: SpecificationRepository;
+
   constructor() {
     this.categories = [];
+  }
+
+  public static getInstance() {
+    if (!SpecificationRepository.INSTANCE)
+      SpecificationRepository.INSTANCE = new SpecificationRepository();
+    return SpecificationRepository.INSTANCE;
   }
 
   findByName(name: string) {
