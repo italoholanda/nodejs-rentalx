@@ -14,7 +14,7 @@ export default class CreateSpecificationService {
     const categoryAlreadyExists = this.repository.findByName(name);
 
     if (categoryAlreadyExists)
-      throw new Error(`Category ''${name}'' already exists`);
+      throw new Error(`Specification ''${name}'' already exists`);
 
     this.repository.create({ name, description });
   }
