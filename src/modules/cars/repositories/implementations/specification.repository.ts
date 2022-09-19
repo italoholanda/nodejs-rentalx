@@ -1,7 +1,7 @@
-import Specification from "../model/Specification";
+import Specification from "../../model/Specification";
 import ISpecificationRepository, {
   ISpecificationDTO,
-} from "./ISpecificationRepository";
+} from "../ISpecificationRepository";
 
 class SpecificationRepository implements ISpecificationRepository {
   private categories: Specification[];
