@@ -8,11 +8,7 @@ export default class ListSpecificationsController {
   }
 
   handle(request: Request, response: Response) {
-    try {
-      const specificationList = this.listSpecificationsUseCase.execute();
-      return response.status(200).json(specificationList);
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    const specificationList = this.listSpecificationsUseCase.execute();
+    return response.status(200).json(specificationList);
   }
 }

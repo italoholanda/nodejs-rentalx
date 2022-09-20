@@ -9,31 +9,18 @@ const categoriesRoutes = Router();
 const upload = multer({ dest: "./tmp" });
 
 categoriesRoutes.post("/", (request, response) => {
-  try {
-    createCategoryController.handle(request, response);
-  } catch (err) {
-    return response.status(400).json({ message: err.message });
-  }
-
+  createCategoryController.handle(request, response);
   return response.status(201).send();
 });
 
 categoriesRoutes.get("/", (request, response) => {
-  try {
-    const categoriesList = listCategoriesController.handle(request, response);
-    return response.status(200).json(categoriesList);
-  } catch (err) {
-    return response.status(400).json({ message: err.message });
-  }
+  const categoriesList = listCategoriesController.handle(request, response);
+  return response.status(200).json(categoriesList);
 });
 
 categoriesRoutes.post("/import", upload.single("file"), (request, response) => {
-  try {
-    importCategoryController.handle(request, response);
-    return response.status(201).send();
-  } catch (err) {
-    return response.status(400).json({ message: err.message });
-  }
+  importCategoryController.handle(request, response);
+  return response.status(201).send();
 });
 
 export { categoriesRoutes };

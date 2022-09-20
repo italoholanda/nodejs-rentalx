@@ -6,12 +6,7 @@ import listSpecificationsController from "../modules/cars/useCases/listSpecifica
 const specificationRoutes = Router();
 
 specificationRoutes.post("/", (request, response) => {
-  try {
-    createSpecificationController.handle(request, response);
-  } catch (err) {
-    return response.status(400).json({ message: err.message });
-  }
-
+  createSpecificationController.handle(request, response);
   return response.status(201).send();
 });
 
