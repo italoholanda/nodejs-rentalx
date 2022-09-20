@@ -42,6 +42,115 @@
             "description": "Category already exists"
           }
         }
+      },
+      "get": {
+        "summary": "List categories",
+        "description": "List of registered categories",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "name": "SUV",
+                      "description": "Veículo utilitário esportivo."
+                    },
+                    {
+                      "name": "Hatch",
+                      "description": "Veículo compacto / carroceria reduzida."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/specifications": {
+      "post": {
+        "summary": "Create a new specification",
+        "description": "Create a new specification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Airbag",
+                  "description": "Ítem de segurança obrigatório."
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Specification already exists"
+          }
+        }
+      },
+      "get": {
+        "summary": "List specifications",
+        "description": "List of registered specifications",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "name": "Airbag",
+                      "description": "Ítem de segurança obrigatório."
+                    },
+                    {
+                      "name": "Ar-condicionado",
+                      "description": "Refrigeração interna do veículo."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
