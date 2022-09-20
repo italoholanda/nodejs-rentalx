@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/csv-parse": "^1.2.2",
     "@types/express": "^4.17.14",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
@@ -27,7 +28,10 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
+    "@types/multer": "^1.4.7",
+    "csv-parse": "^5.3.0",
     "express": "^4.18.1",
+    "multer": "^1.4.5-lts.1",
     "uuid": "^9.0.0"
   }
 }
