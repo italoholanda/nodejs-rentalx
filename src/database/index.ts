@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm";
 
+import * as Migrations from "./migrations";
+
 const dataSource = new DataSource({
   type: "postgres",
   host: "localhost",
@@ -7,6 +9,7 @@ const dataSource = new DataSource({
   username: "rentalx_admin",
   password: "rentalx_admin",
   database: "rentalx",
+  migrations: [Migrations.CreateCategories],
 });
 
 export default dataSource;
