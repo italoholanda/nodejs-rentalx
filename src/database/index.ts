@@ -1,15 +1,13 @@
-import { DataSource } from "typeorm";
+import { createConnection, getConnectionOptions } from "typeorm";
 
-import * as Migrations from "./migrations";
+interface IOptions {
+  host: string;
+}
 
-const dataSource = new DataSource({
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "rentalx_admin",
-  password: "rentalx_admin",
-  database: "rentalx",
-  migrations: [Migrations.CreateCategories],
+getConnectionOptions().then((options) => {
+  const newOptions = options as IOptions;
+  newOptions.host = "rentalx_db";
+  createConnection({
+    ...options,
+  });
 });
-
-export default dataSource;

@@ -8,11 +8,7 @@ export default class ListCategoriesController {
   }
 
   handle(request: Request, response: Response) {
-    try {
-      const categoriesList = this.listCategoriesUseCase.execute();
-      return response.status(200).json(categoriesList);
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    const categoriesList = this.listCategoriesUseCase.execute();
+    return response.status(200).json(categoriesList);
   }
 }

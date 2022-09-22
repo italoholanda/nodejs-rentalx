@@ -5,7 +5,8 @@ export default class ListCategoriesUseCase {
     this.categoriesRepository = categoriesRepository;
   }
 
-  execute() {
-    return this.categoriesRepository.list();
+  async execute() {
+    const categories = await this.categoriesRepository.list();
+    return categories;
   }
 }
