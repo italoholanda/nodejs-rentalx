@@ -1,6 +1,5 @@
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
-import dataSource from "../../../../database";
 import Category from "../../entities/Category";
 import { ICategoryDTO, ICategoriesRepository } from "../ICategoriesRepository";
 
@@ -8,11 +7,11 @@ export default class CategoriesRepository implements ICategoriesRepository {
   private repository: Repository<Category>;
 
   constructor() {
-    this.repository = dataSource.getRepository(Category);
+    this.repository = getRepository(Category);
   }
 
   async findByName(name: string) {
-    const category = await this.repository.findOne({ where: { name } });
+    const category = await this.repository.findOne({ name });
     return category;
   }
 

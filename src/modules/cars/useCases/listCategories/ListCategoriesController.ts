@@ -9,6 +9,6 @@ export default class ListCategoriesController {
 
   handle(request: Request, response: Response) {
     const categoriesList = this.listCategoriesUseCase.execute();
-    return response.status(200).json(categoriesList);
+    return response.json(categoriesList);
   }
 }
