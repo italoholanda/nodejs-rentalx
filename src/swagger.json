@@ -11,6 +11,7 @@
   "paths": {
     "/categories": {
       "post": {
+        "tags": ["categories"],
         "summary": "Create a new category",
         "description": "Create a new category",
         "requestBody": {
@@ -43,7 +44,9 @@
           }
         }
       },
+
       "get": {
+        "tags": ["categories"],
         "summary": "List categories",
         "description": "List of registered categories",
         "responses": {
@@ -81,8 +84,40 @@
         }
       }
     },
+
+    "/categories/import": {
+      "post": {
+        "tags": ["categories"],
+        "summary": "Imports CSV file",
+        "description": "Bulk imports categories from CSV file into database.",
+        "operationId": "uploadFile",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "upload",
+            "in": "formData",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "upload",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import successful"
+          }
+        }
+      }
+    },
+
     "/specifications": {
       "post": {
+        "tags": ["specifications"],
         "summary": "Create a new specification",
         "description": "Create a new specification",
         "requestBody": {
@@ -116,6 +151,7 @@
         }
       },
       "get": {
+        "tags": ["specifications"],
         "summary": "List specifications",
         "description": "List of registered specifications",
         "responses": {
