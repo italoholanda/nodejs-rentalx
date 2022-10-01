@@ -1,5 +1,6 @@
 import { parse as csvParse } from "csv-parse";
 import fs from "fs";
+import { inject, injectable } from "tsyringe";
 
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
 
@@ -10,19 +11,23 @@ interface IImportCategory {
 
 type MulterFile = Express.Multer.File;
 
+@injectable()
 export default class ImportCategoryUseCase {
-  constructor(private repository: ICategoriesRepository) {
-    this.repository = repository;
-  }
+  constructor(
+    @inject("CategoriesRepository")
+    private repository: ICategoriesRepository
+  ) {}
 
-  private categoryAlreadyExists(name: string) {
-    return Boolean(this.repository.findByName(name));
+  private categories: IImportCategory[] = [];
+
+  private async categoryAlreadyExists(name: string) {
+    const categoryFound = await this.repository.findByName(name);
+    return Boolean(categoryFound);
   }
 
   private loadCategories(file: MulterFile): Promise<IImportCategory[]> {
     return new Promise((resolve, reject) => {
       const stream = fs.createReadStream(file.path);
-      const categories: IImportCategory[] = [];
       const parseFile = csvParse();
 
       stream.pipe(parseFile);
@@ -30,11 +35,11 @@ export default class ImportCategoryUseCase {
       parseFile
         .on("data", async (line) => {
           const [name, description] = await line;
-          categories.push({ name, description });
+          this.categories.push({ name, description });
         })
         .on("end", () => {
           fs.promises.unlink(file.path);
-          resolve(categories);
+          resolve(this.categories);
         })
         .on("error", (err) => reject(err));
     });
@@ -44,8 +49,8 @@ export default class ImportCategoryUseCase {
     if (!file) throw new Error("Missing file");
     const categories = await this.loadCategories(file);
 
-    categories.forEach((category) => {
-      if (this.categoryAlreadyExists(category.name)) return;
+    categories.forEach(async (category) => {
+      if (await this.categoryAlreadyExists(category.name)) return;
       this.repository.create(category);
     });
   }
