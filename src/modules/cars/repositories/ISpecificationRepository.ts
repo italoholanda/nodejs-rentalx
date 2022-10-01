@@ -5,8 +5,8 @@ export interface ISpecificationDTO {
   description: string;
 }
 
-export default interface ISpecificationRepository {
-  create({ name, description }: ISpecificationDTO): void;
-  findByName(name: string): Specification | undefined;
-  list(): Specification[];
+export interface ISpecificationRepository {
+  create({ name, description }: ISpecificationDTO): Promise<void>;
+  findByName(name: string): Promise<Specification | undefined>;
+  list(): Promise<Specification[]>;
 }
