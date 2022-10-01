@@ -7,8 +7,8 @@ export default class ListCategoriesController {
     this.listCategoriesUseCase = listCategoriesUseCase;
   }
 
-  handle(request: Request, response: Response) {
-    const categoriesList = this.listCategoriesUseCase.execute();
+  async handle(request: Request, response: Response) {
+    const categoriesList = await this.listCategoriesUseCase.execute();
     return response.json(categoriesList);
   }
 }
