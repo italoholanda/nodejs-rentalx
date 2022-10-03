@@ -18,7 +18,7 @@ export default class User {
   @Column()
   private email: string;
 
-  @Column("driver_license")
+  @Column()
   private driverLicense: string;
 
   @Column()
