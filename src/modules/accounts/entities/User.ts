@@ -4,25 +4,25 @@ import { v4 as uuidv4 } from "uuid";
 @Entity("users")
 export default class User {
   @PrimaryColumn()
-  private id: string;
+  id: string;
 
   @Column()
-  private name: string;
+  name: string;
 
   @Column()
-  private password: string;
+  password: string;
 
   @Column()
-  private email: string;
+  email: string;
 
   @Column()
-  private driverLicense: string;
+  driverLicense: string;
 
   @Column()
-  private isAdmin: boolean;
+  isAdmin: boolean;
 
   @CreateDateColumn()
-  private created_at: Date;
+  created_at: Date;
 
   constructor() {
     if (!this.id) this.id = uuidv4();
