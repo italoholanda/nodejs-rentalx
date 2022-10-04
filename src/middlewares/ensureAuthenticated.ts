@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
+import { AppError } from "../errors/AppError";
 import UsersRepository from "../modules/accounts/repositories/implementations/users.repository";
 
 interface IVerifyResponse {
@@ -14,7 +15,7 @@ export async function ensureAuthenticated(
 ) {
   const authHeader = request.headers.authorization;
 
-  if (!authHeader) throw new Error("Token missing from request");
+  if (!authHeader) throw new AppError("Token missing from request", 401);
 
   const [, token] = authHeader.split(" ");
 
@@ -28,9 +29,9 @@ export async function ensureAuthenticated(
     const user = await usersRepository.findById(user_id);
 
     if (user) next();
-    else throw new Error("User not found");
+    else throw new AppError("User not found", 401);
     next();
   } catch {
-    throw new Error("Invalid token");
+    throw new AppError("Invalid token", 401);
   }
 }

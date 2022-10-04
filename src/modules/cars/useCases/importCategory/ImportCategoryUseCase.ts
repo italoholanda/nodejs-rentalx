@@ -2,6 +2,7 @@ import { parse as csvParse } from "csv-parse";
 import fs from "fs";
 import { inject, injectable } from "tsyringe";
 
+import { AppError } from "../../../../errors/AppError";
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
 
 interface IImportCategory {
@@ -46,7 +47,7 @@ export default class ImportCategoryUseCase {
   }
 
   async execute(file?: MulterFile) {
-    if (!file) throw new Error("Missing file");
+    if (!file) throw new AppError("Missing file");
     const categories = await this.loadCategories(file);
 
     categories.forEach(async (category) => {

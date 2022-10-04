@@ -10,6 +10,6 @@ export default class ListSpecificationsController {
     );
 
     const specificationList = await listSpecificationsUseCase.execute();
-    return response.status(200).json(specificationList);
+    return response.json(specificationList);
   }
 }
