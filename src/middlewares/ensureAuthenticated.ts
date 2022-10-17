@@ -4,10 +4,9 @@ import { verify } from "jsonwebtoken";
 import { AppError } from "../errors/AppError";
 import UsersRepository from "../modules/accounts/repositories/implementations/users.repository";
 
-interface IVerifyResponse {
+interface IPayload {
   sub: string;
 }
-
 export async function ensureAuthenticated(
   request: Request,
   response: Response,
@@ -15,23 +14,24 @@ export async function ensureAuthenticated(
 ) {
   const authHeader = request.headers.authorization;
 
-  if (!authHeader) throw new AppError("Token missing from request", 401);
+  if (!authHeader) throw new AppError("missing token", 401);
 
   const [, token] = authHeader.split(" ");
 
   try {
     const { sub: user_id } = verify(
       token,
-      "b779fea8f8fb1099c007f8695a66df5b"
-    ) as IVerifyResponse;
-
+      "a2d10a3211b415832791a6bc6031f9ab"
+    ) as IPayload;
     const usersRepository = new UsersRepository();
-    const user = await usersRepository.findById(user_id);
 
-    if (user) next();
-    else throw new AppError("User not found", 401);
+    const user = usersRepository.findById(user_id);
+
+    if (!user) throw new AppError("user doesn't exists", 401);
+
+    request.user = { id: user_id };
     next();
   } catch {
-    throw new AppError("Invalid token", 401);
+    throw new AppError("invalid token!", 401);
   }
 }

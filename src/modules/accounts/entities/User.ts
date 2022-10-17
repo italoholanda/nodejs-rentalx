@@ -16,6 +16,9 @@ export default class User {
   email: string;
 
   @Column()
+  avatar: string;
+
+  @Column()
   driverLicense: string;
 
   @Column()
