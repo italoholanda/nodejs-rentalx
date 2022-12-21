@@ -1,5 +1,5 @@
 import { AppError } from "../../../../errors/AppError";
-import User from "../../entities/User";
+import User from "../../infra/typeorm/entities/User";
 import { UserRepositoryInMemory } from "../../repositories/in-memory/UsersRepositoryInMemory";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
