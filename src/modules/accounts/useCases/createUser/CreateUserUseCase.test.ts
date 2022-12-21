@@ -1,4 +1,4 @@
-import { AppError } from "../../../../errors/AppError";
+import { AppError } from "../../../../shared/errors/AppError";
 import User from "../../infra/typeorm/entities/User";
 import { UserRepositoryInMemory } from "../../repositories/in-memory/UsersRepositoryInMemory";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
