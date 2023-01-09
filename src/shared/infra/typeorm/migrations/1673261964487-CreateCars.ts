@@ -67,8 +67,8 @@ export class CreateCars1673261964487 implements MigrationInterface {
             referencedTableName: "categories",
             referencedColumnNames: ["id"],
             columnNames: ["category_id"],
-            onDelete: "SETNULL",
-            onUpdate: "SETNULL",
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
