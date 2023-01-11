@@ -14,9 +14,8 @@ class CarsRepository implements ICarsRepository {
   }
 
   async create(data: ICreateCarDTO): Promise<void> {
-    const car = new Car();
-    Object.assign(car, data);
-    this.repository.create(car);
+    const car = this.repository.create(data);
+    await this.repository.save(car);
   }
 
   async findByName(name: string): Promise<Car | undefined> {
