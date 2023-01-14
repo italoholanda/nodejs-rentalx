@@ -10,6 +10,12 @@ interface ICreateCarDTO {
   category_id: string;
 }
 
+export interface IFindAvailableArgs {
+  brand?: string;
+  category_id?: string;
+  name?: string;
+}
+
 interface ICarsRepository {
   create(data: ICreateCarDTO): Promise<void>;
 
@@ -20,6 +26,8 @@ interface ICarsRepository {
   findByLicensePlate(license_plate: string): Promise<Car | undefined>;
 
   list(): Promise<Car[]>;
+
+  findAvailable(args: IFindAvailableArgs): Promise<Car[]>;
 }
 
 export { ICarsRepository, ICreateCarDTO };

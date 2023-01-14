@@ -1,5 +1,9 @@
 import { Car } from "../../infra/typeorm/entities/Car";
-import { ICarsRepository, ICreateCarDTO } from "../ICarsRepository";
+import {
+  ICarsRepository,
+  ICreateCarDTO,
+  IFindAvailableArgs,
+} from "../ICarsRepository";
 
 class CarsRepositoryInMemory implements ICarsRepository {
   private carList: Car[] = [];
@@ -24,6 +28,18 @@ class CarsRepositoryInMemory implements ICarsRepository {
 
   async list(): Promise<Car[]> {
     return this.carList;
+  }
+
+  async findAvailable(args: IFindAvailableArgs): Promise<Car[]> {
+    const { category_id, name, brand } = args;
+
+    return this.carList
+      .filter((car) => car.available)
+      .filter((car) => !category_id || car.category_id === category_id)
+      .filter((car) => !name || car.name.toLowerCase() === name.toLowerCase())
+      .filter(
+        (car) => !brand || car.brand.toLowerCase() === brand.toLowerCase()
+      );
   }
 }
 

@@ -24,8 +24,8 @@ const carList: IRequest[] = [
     daily_rate: 100,
     description: "",
     fine_amount: 100,
-    license_plate: "xyz",
-    category_id: "1",
+    license_plate: "sxp",
+    category_id: "3",
   },
   {
     name: "Towner",
@@ -33,7 +33,7 @@ const carList: IRequest[] = [
     daily_rate: 100,
     description: "",
     fine_amount: 100,
-    license_plate: "xyz",
+    license_plate: "mrt",
     category_id: "1",
   },
   {
@@ -42,7 +42,7 @@ const carList: IRequest[] = [
     daily_rate: 100,
     description: "",
     fine_amount: 100,
-    license_plate: "xyz",
+    license_plate: "akl",
     category_id: "1",
   },
   {
@@ -51,7 +51,7 @@ const carList: IRequest[] = [
     daily_rate: 100,
     description: "",
     fine_amount: 100,
-    license_plate: "xyz",
+    license_plate: "nbv",
     category_id: "1",
   },
   {
@@ -69,8 +69,17 @@ const carList: IRequest[] = [
     daily_rate: 100,
     description: "",
     fine_amount: 100,
-    license_plate: "xyz",
+    license_plate: "qgf",
     category_id: "2",
+  },
+  {
+    name: "Tiida",
+    brand: "Nissan",
+    daily_rate: 100,
+    description: "",
+    fine_amount: 100,
+    license_plate: "asd",
+    category_id: "1",
   },
 ];
 
@@ -90,7 +99,7 @@ describe("Car listing", () => {
   });
 
   it("should be possible to list all the available cars", async () => {
-    const useCaseCars: Car[] = await listCarsUseCase.execute();
+    const useCaseCars: Car[] = await listCarsUseCase.execute({});
 
     const isListEquals = useCaseCars.every(
       (car, index) => car.name === carList[index].name && car.available
@@ -99,11 +108,11 @@ describe("Car listing", () => {
     expect(isListEquals).toBe(true);
   });
 
-  it("should be possible to list all cars by category name", async () => {
-    const SUVCar = carList.find((car) => car.name === "Tiggo");
+  it("should be possible to list all cars by category id", async () => {
+    const SUVCar = carList.find((car) => car.category_id === "3");
 
     const useCaseCar: Car[] = await listCarsUseCase.execute({
-      categoryName: "SUV",
+      category_id: SUVCar?.category_id,
     });
 
     expect(useCaseCar[0].name).toBe(SUVCar?.name);
@@ -111,7 +120,7 @@ describe("Car listing", () => {
 
   it("should be possible to list all cars by manufactory name", async () => {
     const useCaseCars: Car[] = await listCarsUseCase.execute({
-      brand: "Nissan",
+      brand: "SUV",
     });
 
     const filteredCarList = carList.filter((car) => car.brand === "Nissan");
@@ -132,6 +141,27 @@ describe("Car listing", () => {
 
     const isListEquals = useCaseCars.every(
       (car, index) => car.name === filteredCarList[index].name
+    );
+
+    expect(isListEquals).toBe(true);
+  });
+
+  it("should be possible to list all cars by car name, category_id and brand ", async () => {
+    const useCaseCars: Car[] = await listCarsUseCase.execute({
+      name: "March",
+      category_id: "1",
+      brand: "Nissan",
+    });
+
+    const filteredCarList = carList.filter(
+      (car) =>
+        car.name === "March" &&
+        car.category_id === "1" &&
+        car.brand === "Nissan"
+    );
+
+    const isListEquals = useCaseCars.every(
+      (car, index) => car.license_plate === filteredCarList[index].license_plate
     );
 
     expect(isListEquals).toBe(true);
