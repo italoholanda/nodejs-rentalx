@@ -33,23 +33,28 @@ class CarsRepositoryInMemory implements ICarsRepository {
   async findAvailable(args: IFindAvailableArgs): Promise<Car[]> {
     const { category_id, name, brand } = args;
 
-    const isCarAvailable = (car: Car) => car.available;
+    const checkRequiredParam = (
+      car: Car,
+      key: keyof Car,
+      value?: Car[keyof Car]
+    ) => {
+      if (!value) return true;
 
-    const checkName = (car: Car, name?: string) =>
-      !name || car.name.toLowerCase() === name.toLowerCase();
+      const carValue = car[key];
 
-    const checkBrand = (car: Car, brand?: string) =>
-      !brand || car.brand.toLowerCase() === brand.toLowerCase();
+      if (typeof carValue === "string" && typeof value === "string") {
+        return carValue.toLowerCase() === value.toLowerCase();
+      }
 
-    const checkCategory = (car: Car, category_id?: string) =>
-      !category_id || car.category_id === category_id;
+      return false;
+    };
 
     return this.carList.filter(
       (car) =>
-        isCarAvailable(car) &&
-        checkName(car, name) &&
-        checkBrand(car, brand) &&
-        checkCategory(car, category_id)
+        car.available &&
+        checkRequiredParam(car, "category_id", category_id) &&
+        checkRequiredParam(car, "name", name) &&
+        checkRequiredParam(car, "brand", brand)
     );
   }
 }
