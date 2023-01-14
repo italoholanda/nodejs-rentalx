@@ -1,7 +1,7 @@
 import { Car } from "../../infra/typeorm/entities/Car";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
 import { CarsRepositoryInMemory } from "../../repositories/in-memory/CarsRepositoryInMemory";
-import { CreateCarUseCase, IRequest } from "../createCar/createCarUseCase";
+import { IRequest } from "../createCar/createCarUseCase";
 import { ListCarsUseCase } from "./listCarsUseCase";
 
 let carsRepository: ICarsRepository;
