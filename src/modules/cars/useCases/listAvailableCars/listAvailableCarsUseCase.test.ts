@@ -2,11 +2,11 @@ import { Car } from "../../infra/typeorm/entities/Car";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
 import { CarsRepositoryInMemory } from "../../repositories/in-memory/CarsRepositoryInMemory";
 import { IRequest } from "../createCar/createCarUseCase";
-import { ListCarsUseCase } from "./listAvailableCarsUseCase";
+import { ListAvailableCarsUseCase } from "./listAvailableCarsUseCase";
 
 let carsRepository: ICarsRepository;
 
-let listCarsUseCase: ListCarsUseCase;
+let listAvailableCarsUseCase: ListAvailableCarsUseCase;
 
 const carList: IRequest[] = [
   {
@@ -95,11 +95,11 @@ describe("Car listing", () => {
 
     await handlePopulateRepository(carsRepository);
 
-    listCarsUseCase = new ListCarsUseCase(carsRepository);
+    listAvailableCarsUseCase = new ListAvailableCarsUseCase(carsRepository);
   });
 
   it("should be possible to list all the available cars", async () => {
-    const useCaseCars: Car[] = await listCarsUseCase.execute({});
+    const useCaseCars: Car[] = await listAvailableCarsUseCase.execute({});
 
     const isListEquals = useCaseCars.every(
       (car, index) => car.name === carList[index].name && car.available
@@ -111,7 +111,7 @@ describe("Car listing", () => {
   it("should be possible to list all cars by category id", async () => {
     const SUVCar = carList.find((car) => car.category_id === "3");
 
-    const useCaseCar: Car[] = await listCarsUseCase.execute({
+    const useCaseCar: Car[] = await listAvailableCarsUseCase.execute({
       category_id: SUVCar?.category_id,
     });
 
@@ -119,7 +119,7 @@ describe("Car listing", () => {
   });
 
   it("should be possible to list all cars by manufactory name", async () => {
-    const useCaseCars: Car[] = await listCarsUseCase.execute({
+    const useCaseCars: Car[] = await listAvailableCarsUseCase.execute({
       brand: "SUV",
     });
 
@@ -133,7 +133,7 @@ describe("Car listing", () => {
   });
 
   it("should be possible to list all cars by car name", async () => {
-    const useCaseCars: Car[] = await listCarsUseCase.execute({
+    const useCaseCars: Car[] = await listAvailableCarsUseCase.execute({
       name: "March",
     });
 
@@ -147,7 +147,7 @@ describe("Car listing", () => {
   });
 
   it("should be possible to list all cars by car name, category_id and brand ", async () => {
-    const useCaseCars: Car[] = await listCarsUseCase.execute({
+    const useCaseCars: Car[] = await listAvailableCarsUseCase.execute({
       name: "March",
       category_id: "1",
       brand: "Nissan",
