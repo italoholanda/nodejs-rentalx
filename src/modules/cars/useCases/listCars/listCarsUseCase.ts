@@ -1,3 +1,6 @@
+import { inject, injectable } from "tsyringe";
+
+import { CarsRepository } from "../../infra/typeorm/repositories/cars.repository";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
 
 interface IParams {
@@ -6,8 +9,12 @@ interface IParams {
   name?: string;
 }
 
+@injectable()
 class ListCarsUseCase {
-  constructor(private carsRepository: ICarsRepository) {}
+  constructor(
+    @inject(CarsRepository)
+    private carsRepository: ICarsRepository
+  ) {}
 
   async execute(params: IParams) {
     const cars = await this.carsRepository.findAvailable(params);
