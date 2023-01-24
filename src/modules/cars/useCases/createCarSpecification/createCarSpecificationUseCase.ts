@@ -1,41 +1,29 @@
 import { AppError } from "../../../../shared/errors/AppError";
-import { Car } from "../../infra/typeorm/entities/Car";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
+import { ISpecificationRepository } from "../../repositories/ISpecificationRepository";
 
 interface IRequest {
   car_id: string;
   specifications_id: string[];
 }
-
 class CreateCarSpecificationUseCase {
-  constructor(private carsRepository: ICarsRepository) {}
+  constructor(
+    private carsRepository: ICarsRepository,
+    private specificationsRepository: ISpecificationRepository
+  ) {}
 
-  specificationAlreadyExists(car: Car, specifications_id: string[]) {
-    let exists = false;
+  async execute({ car_id, specifications_id }: IRequest) {
+    const carExists = await this.carsRepository.findById(car_id);
 
-    specifications_id.forEach((id) => {
-      exists = car.specifications?.some((s) => s.id === id);
-    });
+    if (!carExists) throw new AppError("Car does not exists");
 
-    return exists;
-  }
+    const specifications = await this.specificationsRepository.findByIds(
+      specifications_id
+    );
 
-  hasDuplicatedValues(specifications_id: string[]) {
-    const specifications_idSet = new Set(specifications_id);
-    return specifications_idSet.size !== specifications_id.length;
-  }
+    carExists.specifications = specifications;
 
-  async execute({ car_id, specifications_id }: IRequest): Promise<void> {
-    const car = await this.carsRepository.findById(car_id);
-
-    if (!car)
-      throw new AppError(`Car does not exists. ID ${car_id} not found.`);
-
-    if (this.specificationAlreadyExists(car, specifications_id))
-      throw new AppError(`Specification already exists.`);
-
-    if (this.hasDuplicatedValues(specifications_id))
-      throw new AppError(`Duplicated specifications are forbidden.`);
+    await this.carsRepository.create(carExists);
   }
 }
 

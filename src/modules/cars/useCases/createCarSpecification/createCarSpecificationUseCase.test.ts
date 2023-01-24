@@ -1,22 +1,26 @@
 import { AppError } from "../../../../shared/errors/AppError";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
 import { CarsRepositoryInMemory } from "../../repositories/in-memory/CarsRepositoryInMemory";
+import { SpecificationsRepositoryInMemory } from "../../repositories/in-memory/SpecificationsRepositoryInMemory";
+import { ISpecificationRepository } from "../../repositories/ISpecificationRepository";
 import { CreateCarSpecificationUseCase } from "./createCarSpecificationUseCase";
 
 let createCarSpecificationUseCase: CreateCarSpecificationUseCase;
+let carsRepositoryInMemory: ICarsRepository;
+let specificationsInMemory: ISpecificationRepository;
 
-let carsRepository: ICarsRepository;
-
-describe("should be able to create a new car specification", () => {
+describe("Create car Specification", () => {
   beforeEach(() => {
-    carsRepository = new CarsRepositoryInMemory();
+    carsRepositoryInMemory = new CarsRepositoryInMemory();
+    specificationsInMemory = new SpecificationsRepositoryInMemory();
     createCarSpecificationUseCase = new CreateCarSpecificationUseCase(
-      carsRepository
+      carsRepositoryInMemory,
+      specificationsInMemory
     );
   });
 
-  it("should be possible to register a specification into a car", async () => {
-    const car = {
+  it("should be able to add a new specification to a existent car", async () => {
+    carsRepositoryInMemory.create({
       name: "Towner",
       brand: "ASIA",
       category_id: "1",
@@ -24,54 +28,44 @@ describe("should be able to create a new car specification", () => {
       description: "A very small van",
       fine_amount: 100,
       license_plate: "ABC-321",
-    };
+    });
 
-    await carsRepository.create(car);
+    const car = await carsRepositoryInMemory.findByName("Towner");
 
-    const registeredCar = await carsRepository.findByName("Towner");
+    if (!car?.id) return;
 
-    const car_id = `${registeredCar?.id}`;
-
-    const specifications_id = ["4321"];
-
-    await createCarSpecificationUseCase.execute({ car_id, specifications_id });
+    await createCarSpecificationUseCase.execute({
+      car_id: car.id,
+      specifications_id: ["54321"],
+    });
   });
 
-  it("it must not be possible to register a specification to a not registered car", async () => {
-    expect(async () => {
-      const car_id = "1234";
-      const specifications_id = ["4321"];
+  it("should be able to add a list of specifications to a existent car", async () => {
+    carsRepositoryInMemory.create({
+      name: "Towner",
+      brand: "ASIA",
+      category_id: "1",
+      daily_rate: 1000,
+      description: "A very small van",
+      fine_amount: 100,
+      license_plate: "ABC-321",
+    });
 
-      await createCarSpecificationUseCase.execute({
-        car_id,
-        specifications_id,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+    const car = await carsRepositoryInMemory.findByName("Towner");
+
+    if (!car?.id) return;
+
+    await createCarSpecificationUseCase.execute({
+      car_id: car.id,
+      specifications_id: ["54321", "32412", "98672"],
+    });
   });
 
-  it("it must not be possible to register duplicated specifications", async () => {
+  it("should not be able to add a new specification to a invalid car", async () => {
     expect(async () => {
-      const car = {
-        name: "Ka",
-        brand: "Ford",
-        category_id: "1",
-        daily_rate: 1000,
-        description: "A very smart car",
-        fine_amount: 100,
-        license_plate: "CBA-123",
-      };
-
-      await carsRepository.create(car);
-
-      const registeredCar = await carsRepository.findByName("Ka");
-
-      const car_id = `${registeredCar?.id}`;
-
-      const specifications_id = ["4321", "4321"];
-
       await createCarSpecificationUseCase.execute({
-        car_id,
-        specifications_id,
+        car_id: "123",
+        specifications_id: ["54321"],
       });
     }).rejects.toBeInstanceOf(AppError);
   });
