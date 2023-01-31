@@ -22,7 +22,7 @@ carRoutes.post(
 );
 
 carRoutes.post(
-  "/specifications:id",
+  "/specifications/:id",
   ensureAuthenticated,
   ensureAdmin,
   createCarSpecificationController.handle
